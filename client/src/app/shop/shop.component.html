@@ -2,7 +2,7 @@
     <div class="row">
         <section class="col-3">
             <ng-container *ngIf="types && brands">
-                <h5 class="text-warning ml-3 mt-3 mb-4">Sort</h5>
+                <h5 class="text-warning ml-3 mt-5 mb-1">Sort</h5>
                 <select class="custom-select mb-4" (change)="onSortSelected($event.target.value)">
                     <option *ngFor="let sort of sortOptions" 
                         [selected]="shopParams?.sort === sort?.value"

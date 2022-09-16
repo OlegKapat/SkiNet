@@ -5,6 +5,7 @@ import { ServerErrorComponent } from './core/server-error/server-error.component
 import { HomeComponent } from './home/home.component';
 import { ProductDetailsComponent } from './shop/product-details/product-details.component';
 import { ShopComponent } from './shop/shop.component';
+import { NotFoundComponent } from './core/not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -12,10 +13,11 @@ const routes: Routes = [
     path: 'shop',
     loadChildren: () =>
       import('./shop/shop.module').then((mod) => mod.ShopModule),
-    data: { breadcrumb: 'Shop' },
+      data: { breadcrumb: 'Shop' },
   },
-  { path: 'test-error', component: TestErrorComponent },
-  { path: 'server-error', component: ServerErrorComponent },
+  { path: 'test-error', component: TestErrorComponent,data: { breadcrumb: 'Test Error' } },
+  { path: 'server-error', component: ServerErrorComponent, data: { breadcrumb: 'Server Error' } },
+  { path: 'not-found', component: NotFoundComponent, data: { breadcrumb: 'Not found' } },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];
 
