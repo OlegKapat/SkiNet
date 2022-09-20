@@ -1,5 +1,6 @@
 using Core.Interfaces;
 using Infrastructure.Data;
+using API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 using API.Helpers;
+using StackExchange.Redis;
 
 namespace API
 {
@@ -24,13 +26,17 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<StoreContext>(x=>x.UseSqlServer(_config["ConnectionString:DefaultConnection"]));
-            services.AddScoped<IProductRepository,ProductRepository>();
             services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddSingleton<IConnectionMultiplexer>(c=>{
+                var configuration = ConfigurationOptions.Parse(_config["ConnectionString:Redis"],true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
             services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
             services.AddControllers();
+            services.AddApplicationServices();
             services.AddCors(opt=>{
                 opt.AddPolicy("CorsPolicy",policy => {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
                 });
             });
             services.AddSwaggerGen(c =>
