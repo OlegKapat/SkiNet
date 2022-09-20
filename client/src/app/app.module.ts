@@ -11,6 +11,7 @@ import { HomeModule } from './home/home.module';
 import { ErrorInterceptor } from './core/interseptors/error.interseptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interseptors/loading.interseptor';
+import { BasketModule } from './basket/basket.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { LoadingInterceptor } from './core/interseptors/loading.interseptor';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule,
+    BasketModule,
     RouterModule,
     NgxSpinnerModule,
     HomeModule,
