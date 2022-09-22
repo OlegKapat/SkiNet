@@ -11,7 +11,8 @@ import { HomeModule } from './home/home.module';
 import { ErrorInterceptor } from './core/interseptors/error.interseptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interseptors/loading.interseptor';
-import { BasketModule } from './basket/basket.module';
+import { ToastrModule } from 'ngx-toastr';
+import { ShopModule } from './shop/shop.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,11 +22,12 @@ import { BasketModule } from './basket/basket.module';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule,
-    BasketModule,
     RouterModule,
     NgxSpinnerModule,
     HomeModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    ShopModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

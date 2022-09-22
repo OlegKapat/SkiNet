@@ -7,7 +7,7 @@ import { BasketRoutingModule } from './basket-routing.module';
 
 @NgModule({
   declarations: [
-    BasketComponent
+  
   ],
   imports: [
     CommonModule,
