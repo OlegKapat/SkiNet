@@ -13,7 +13,9 @@ export class AppComponent implements OnInit {
 
   constructor(private basketService:BasketService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadBasket();
+  }
   loadCurrentUser() {
     // const token = localStorage.getItem('token');
     // this.accountService.loadCurrentUser(token).subscribe(() => {

@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using AutoMapper;
 using API.Helpers;
 using StackExchange.Redis;
+using Infrastructure.Identity;
 
 namespace API
 {
@@ -25,15 +26,17 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+               services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<StoreContext>(x=>x.UseSqlServer(_config["ConnectionString:DefaultConnection"]));
-            services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddDbContext<AppIdentityDbContext>(x=>x.UseSqlServer(_config["ConnectionString:IdentityConnection"]));
             services.AddSingleton<IConnectionMultiplexer>(c=>{
                 var configuration = ConfigurationOptions.Parse(_config["ConnectionString:Redis"],true);
                 return ConnectionMultiplexer.Connect(configuration);
             });
             services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-            services.AddControllers();
             services.AddApplicationServices();
+            services.AddIdentityServices(_config);
             services.AddCors(opt=>{
                 opt.AddPolicy("CorsPolicy",policy => {
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
@@ -59,8 +62,9 @@ namespace API
             app.UseStaticFiles();
             app.UseRouting();
             app.UseCors("CorsPolicy");
+            app.UseAuthentication();
             app.UseAuthorization();
-
+          
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
