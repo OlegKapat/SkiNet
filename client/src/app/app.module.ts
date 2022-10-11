@@ -13,6 +13,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interseptors/loading.interseptor';
 import { ToastrModule } from 'ngx-toastr';
 import { ShopModule } from './shop/shop.module';
+import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { ShopModule } from './shop/shop.module';
     RouterModule,
     NgxSpinnerModule,
     HomeModule,
+    AccountModule,
     NgOptimizedImage,
     ShopModule,
     ToastrModule.forRoot()
@@ -34,5 +36,6 @@ import { ShopModule } from './shop/shop.module';
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
+  
 })
 export class AppModule {}
