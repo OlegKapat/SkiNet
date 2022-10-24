@@ -14,6 +14,7 @@ import { LoadingInterceptor } from './core/interseptors/loading.interseptor';
 import { ToastrModule } from 'ngx-toastr';
 import { ShopModule } from './shop/shop.module';
 import { AccountModule } from './account/account.module';
+import { JwtInterceptor } from './core/interseptors/jwt.interseptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +35,7 @@ import { AccountModule } from './account/account.module';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
   

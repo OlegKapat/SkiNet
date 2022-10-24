@@ -9,6 +9,7 @@ import {
   IBasketItem,
   IBasketTotals,
 } from '../share/models/basket';
+import { IDeliveryMethod } from '../share/models/deliveryMethod';
 import { IProduct } from '../share/models/product';
 
 @Injectable({
@@ -133,5 +134,28 @@ export class BasketService {
     }, error => {
       console.log(error);
     })
+  }
+  setShippingPrice(deliveryMethod: IDeliveryMethod) {
+    this.shipping = deliveryMethod.price;
+    const basket = this.getCurrentBasketValue();
+    basket.deliveryMethodId = deliveryMethod.id;
+    basket.shippingPrice = deliveryMethod.price;
+    this.calculateTotals();
+    this.setBasket(basket);
+  }
+  
+  createPaymentIntent() {
+    return this.http.post(this.baseUrl + 'payments/' + this.getCurrentBasketValue().id, {})
+      .pipe(
+        map((basket: IBasket) => {
+          this.basketSource.next(basket);
+          console.log(this.getCurrentBasketValue());
+        })
+      )
+  }
+  deleteLocalBasket(id: string) {
+    this.basketSource.next(null);
+    this.basketTotalSource.next(null);
+    localStorage.removeItem('basket_id');
   }
 }
