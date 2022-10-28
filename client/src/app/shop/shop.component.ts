@@ -25,7 +25,7 @@ export class ShopComponent implements OnInit {
     {name: 'Price: Low to high', value: 'priceAsc'},
     {name: 'Price: High to low', value: 'priceDesc'},
   ]
-  constructor(private shopService: ShopService) {}
+  constructor(private shopService: ShopService) {this.shopParams = this.shopService.getShopParams();}
 
   ngOnInit(): void {
     this.getProducts(true);
