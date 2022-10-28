@@ -18,7 +18,7 @@ namespace API.Controllers
         private readonly IPaymentService _paymentService;
         private readonly ILogger<IPaymentService> _logger;
         private readonly string _webhookSecret;
-        private readonly IConfiguration _config;
+      
 
         public PaymentsController(IPaymentService paymentService,IConfiguration config,ILogger<IPaymentService> logger)
         {
