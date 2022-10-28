@@ -11,7 +11,10 @@ import { HomeModule } from './home/home.module';
 import { ErrorInterceptor } from './core/interseptors/error.interseptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interseptors/loading.interseptor';
-import { BasketModule } from './basket/basket.module';
+import { ToastrModule } from 'ngx-toastr';
+import { ShopModule } from './shop/shop.module';
+import { AccountModule } from './account/account.module';
+import { JwtInterceptor } from './core/interseptors/jwt.interseptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,16 +24,20 @@ import { BasketModule } from './basket/basket.module';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule,
-    BasketModule,
     RouterModule,
     NgxSpinnerModule,
     HomeModule,
-    NgOptimizedImage
+    AccountModule,
+    NgOptimizedImage,
+    ShopModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
+  
 })
 export class AppModule {}

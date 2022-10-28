@@ -7,14 +7,16 @@ import { map } from 'rxjs/operators';
 import { IType } from '../share/models/productType';
 import { ShopParams } from '../share/models/shopParams';
 import { IProduct } from '../share/models/product';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
-  baseUrl = 'https://localhost:5001/api';
+  baseUrl = environment.apiUrl;
   brands: IBrand[] = [];
   types: IType[] = [];
+  products: IProduct[] = [];
   pagination = new Pagination();
   shopParams = new ShopParams();
   productCache = new Map();
@@ -51,7 +53,7 @@ export class ShopService {
     params = params.append('pageIndex', this.shopParams.pageNumber.toString());
     params = params.append('pageSize', this.shopParams.pageSize.toString());
 
-    return this.http.get<IPagination>(this.baseUrl + '/products', { observe: 'response', params })
+    return this.http.get<IPagination>(this.baseUrl + 'products', { observe: 'response', params })
       .pipe(
         map(response => {
           this.productCache.set(Object.values(this.shopParams).join('-'), response.body.data);
@@ -68,25 +70,30 @@ export class ShopService {
     return this.shopParams;
   }
   getBrands() {
-    return this.http.get<IBrand[]>(`${this.baseUrl}/products/brands`).pipe(
-      map((response) => {
+    if (this.brands.length > 0) {
+      return of(this.brands);
+    }
+    return this.http.get<IBrand[]>(this.baseUrl + 'products/brands').pipe(
+      map(response => {
         this.brands = response;
         return response;
       })
-    );
+    )
   }
   getTypes() {
-    return this.http.get<IType[]>(`${this.baseUrl}/products/types`).pipe(
-      map((response) => {
+    if (this.types.length > 0) {
+      return of(this.types);
+    }
+    return this.http.get<IType[]>(this.baseUrl + 'products/types').pipe(
+      map(response => {
         this.types = response;
         return response;
       })
-    );
+    )
   }
-  getProduct(id: number) {
+  getProduct(id: number)  {
     let product: IProduct;
     this.productCache.forEach((products: IProduct[]) => {
-      console.log(product);
       product = products.find((p) => p.id === id);
     });
 

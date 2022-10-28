@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { ProductDetailsComponent } from './shop/product-details/product-details.component';
 import { ShopComponent } from './shop/shop.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -20,6 +21,22 @@ const routes: Routes = [
     loadChildren: () =>
       import('./basket/basket.module').then((mod) => mod.BasketModule),
       data: { breadcrumb: 'Basket' },
+  },
+  {
+    path: 'orders', 
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./orders/orders.module').then(mod => mod.OrdersModule),
+    data: { breadcrumb: 'Orders' }
+  },
+  {
+    path: 'checkout', 
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule),
+    data: { breadcrumb: 'Checkout' }
+  },
+  {
+    path: 'account', loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule),
+    data: { breadcrumb: {skip: true} }
   },
   { path: 'test-error', component: TestErrorComponent,data: { breadcrumb: 'Test Error' } },
   { path: 'server-error', component: ServerErrorComponent, data: { breadcrumb: 'Server Error' } },

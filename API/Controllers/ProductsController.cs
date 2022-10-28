@@ -33,7 +33,7 @@ namespace API.Controllers
             _productBrandRepo = productBrandRepo;
             _productTypeRepo = productTypeRepo;
         }
-
+        [Cached(600)]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>>
         GetProducts([FromQuery] ProductSpecParams productParams)
@@ -54,7 +54,7 @@ namespace API.Controllers
                 totalItems,
                 data));
         }
-
+        [Cached(600)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
@@ -62,14 +62,14 @@ namespace API.Controllers
             var product = await _productsRepo.GetEntityWithSpec(spec);
             return _mapper.Map<Product, ProductToReturnDto>(product);
         }
-
+        [Cached(600)]
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>>
         GetProductBrands()
         {
             return Ok(await _productBrandRepo.ListAllAsync());
         }
-
+        [Cached(600)]
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductType>>>
         GetProductTypes()
